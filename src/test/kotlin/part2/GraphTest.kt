@@ -3,6 +3,7 @@ package part2
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import kotlin.test.assertFalse
 
 class GraphTest {
 
@@ -20,11 +21,15 @@ class GraphTest {
         assertEquals(1, graph.size)
         assertEquals("V1", graph.getVertex(1)!!.data)
         graph.addEdge(1, 2)
-        graph.addEdge(1, 3)
-        assertTrue(graph.getEdge(1, 2) != null)
-        assertTrue(graph.getEdge(1, 3) != null)
+        graph.addEdge(2, 1)
+        assertFalse(graph.getEdge(1, 2) != null)
+        assertFalse(graph.getEdge(2, 1) != null)
+        graph.addVertex(4, "V4")
+        assertEquals(2, graph.size)
         graph.addEdge(1, 4)
+        graph.addEdge(4, 1)
         assertTrue(graph.getEdge(1, 4) != null)
+        assertTrue(graph.getEdge(4, 1) != null)
     }
 
     @Test
@@ -43,8 +48,8 @@ class GraphTest {
             val setE: MutableSet<Int> = mutableSetOf()
             val vertex=graph.getVertex(id)
             if(vertex!=null)
-               for (e in vertex.getAdjacencies())
-                 setE.add(e.adjacent)
+                for (e in vertex.getAdjacencies())
+                    setE.add(e.adjacent)
             val set2 = mutableSetOf(1, 2, 3, 4)
             set2.remove(id)
             assertEquals(setE, set2)
